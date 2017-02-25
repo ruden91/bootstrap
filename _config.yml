@@ -2,6 +2,9 @@
 markdown:         kramdown
 highlighter:      rouge
 
+kramdown:
+  auto_ids: true
+
 # Permalinks
 permalink:        pretty
 
@@ -10,18 +13,37 @@ source:           docs
 destination:      _gh_pages
 host:             0.0.0.0
 port:             9001
-url:              http://getbootstrap.com
+baseurl:          ""
+url:              https://v4-alpha.getbootstrap.com
 encoding:         UTF-8
+exclude:          [assets/scss/]
+
+gems:
+  - jekyll-redirect-from
+  - jekyll-sitemap
+
+# Social
+title: Bootstrap
+description: The most popular HTML, CSS, and JS framework in the world.
+twitter: getbootstrap
+authors: Mark Otto, Jacob Thornton, and Bootstrap contributors
+social_logo_path: /assets/brand/bootstrap-social-logo.png
+social_image_path: /assets/brand/bootstrap-social.png
 
 gems:
   - jekyll-sitemap
 
 # Custom vars
+<<<<<<< HEAD
 current_version:  3.3.6
+=======
+current_version:  4.0.0-alpha.6
+>>>>>>> db23b1f32e277e0e39485284f4007e8c19a31cf6
 repo:             https://github.com/twbs/bootstrap
-sass_repo:        https://github.com/twbs/bootstrap-sass
+slack:            https://bootstrap-slack.herokuapp.com
 
 download:
+<<<<<<< HEAD
   source:         https://github.com/twbs/bootstrap/archive/v3.3.6.zip
   dist:           https://github.com/twbs/bootstrap/releases/download/v3.3.6/bootstrap-3.3.6-dist.zip
   sass:           https://github.com/twbs/bootstrap-sass/archive/v3.3.6.tar.gz
@@ -38,3 +60,22 @@ cdn:
   css_theme_hash: "sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
   js:             https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js
   js_hash:        "sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+=======
+  source:         https://github.com/twbs/bootstrap/archive/v4.0.0-alpha.6.zip
+  dist:           https://github.com/twbs/bootstrap/releases/download/v4.0.0-alpha.6/bootstrap-4.0.0-alpha.6-dist.zip
+
+blog:             https://blog.getbootstrap.com
+expo:             https://expo.getbootstrap.com
+themes:           https://themes.getbootstrap.com
+
+cdn:
+  # See https://www.srihash.org for info on how to generate the hashes
+  css:            https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css
+  css_hash:       "sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+  js:             https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js
+  js_hash:        "sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+  jquery:         https://code.jquery.com/jquery-3.1.1.slim.min.js
+  jquery_hash:    "sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+  tether:         https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js
+  tether_hash:    "sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+>>>>>>> db23b1f32e277e0e39485284f4007e8c19a31cf6

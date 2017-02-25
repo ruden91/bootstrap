@@ -7,7 +7,7 @@
  */
 
 (function () {
-  'use strict';
+  'use strict'
 
   // Don't re-order tests.
   QUnit.config.reorder = false

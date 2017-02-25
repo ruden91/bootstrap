@@ -1,5 +1,5 @@
 $(function () {
-  'use strict';
+  'use strict'
 
   QUnit.module('modal plugin')
 
@@ -24,6 +24,18 @@ $(function () {
     assert.strictEqual($.fn.modal, undefined, 'modal was set back to undefined (orig value)')
   })
 
+  QUnit.test('should throw explicit error on undefined method', function (assert) {
+    assert.expect(1)
+    var $el = $('<div id="modal-test"/>')
+    $el.bootstrapModal()
+    try {
+      $el.bootstrapModal('noMethod')
+    }
+    catch (err) {
+      assert.strictEqual(err.message, 'No method named "noMethod"')
+    }
+  })
+
   QUnit.test('should return jquery collection containing the element', function (assert) {
     assert.expect(2)
     var $el = $('<div id="modal-test"/>')
@@ -34,7 +46,7 @@ $(function () {
 
   QUnit.test('should expose defaults var for settings', function (assert) {
     assert.expect(1)
-    assert.ok($.fn.bootstrapModal.Constructor.DEFAULTS, 'default object exposed')
+    assert.ok($.fn.bootstrapModal.Constructor.Default, 'default object exposed')
   })
 
   QUnit.test('should insert into dom when show method is called', function (assert) {
@@ -162,6 +174,19 @@ $(function () {
       .bootstrapModal('show')
   })
 
+  QUnit.test('should not close modal when clicking outside of modal-content if data-backdrop="true"', function (assert) {
+    assert.expect(1)
+    var done = assert.async()
+
+    $('<div id="modal-test" data-backdrop="false"><div class="contents"/></div>')
+      .on('shown.bs.modal', function () {
+        $('#modal-test').trigger('click')
+        assert.ok($('#modal-test').is(':visible'), 'modal not hidden')
+        done()
+      })
+      .bootstrapModal('show')
+  })
+
   QUnit.test('should close modal when escape key is pressed via keydown', function (assert) {
     assert.expect(3)
     var done = assert.async()
@@ -216,6 +241,23 @@ $(function () {
       .on('hide.bs.modal', function () {
         triggered += 1
         assert.strictEqual(triggered, 1, 'modal hide triggered once')
+        done()
+      })
+      .bootstrapModal('show')
+  })
+
+  QUnit.test('should remove aria-hidden attribute when shown, add it back when hidden', function (assert) {
+    assert.expect(3)
+    var done = assert.async()
+
+    $('<div id="modal-test" aria-hidden="true"/>')
+      .on('shown.bs.modal', function () {
+        assert.notOk($('#modal-test').is('[aria-hidden]'), 'aria-hidden attribute removed')
+        $(this).bootstrapModal('hide')
+      })
+      .on('hidden.bs.modal', function () {
+        assert.ok($('#modal-test').is('[aria-hidden]'), 'aria-hidden attribute added')
+        assert.strictEqual($('#modal-test').attr('aria-hidden'), 'true', 'correct aria-hidden="true" added')
         done()
       })
       .bootstrapModal('show')
@@ -334,6 +376,44 @@ $(function () {
       .bootstrapModal('show')
   })
 
+  QUnit.test('should have a paddingRight when the modal is taller than the viewport', function (assert) {
+    assert.expect(2)
+    var done = assert.async()
+    $('<div class="fixed-top fixed-bottom sticky-top is-fixed">@Johann-S</div>').appendTo('#qunit-fixture')
+    $('.fixed-top, .fixed-bottom, .is-fixed, .sticky-top').css('padding-right', '10px')
+
+    $('<div id="modal-test"/>')
+      .on('shown.bs.modal', function () {
+        var paddingRight = parseInt($(document.body).css('padding-right'), 10)
+        assert.strictEqual(isNaN(paddingRight), false)
+        assert.strictEqual(paddingRight !== 0, true)
+        $(document.body).css('padding-right', '') // Because test case "should ignore other inline styles when trying to restore body padding after closing" fail if not
+        done()
+      })
+      .bootstrapModal('show')
+  })
+
+  QUnit.test('should remove padding-right on modal after closing', function (assert) {
+    assert.expect(3)
+    var done = assert.async()
+    $('<div class="fixed-top fixed-bottom is-fixed sticky-top">@Johann-S</div>').appendTo('#qunit-fixture')
+    $('.fixed-top, .fixed-bottom, .is-fixed, .sticky-top').css('padding-right', '10px')
+
+    $('<div id="modal-test"/>')
+      .on('shown.bs.modal', function () {
+        var paddingRight = parseInt($(document.body).css('padding-right'), 10)
+        assert.strictEqual(isNaN(paddingRight), false)
+        assert.strictEqual(paddingRight !== 0, true)
+        $(this).bootstrapModal('hide')
+      })
+      .on('hidden.bs.modal', function () {
+        var paddingRight = parseInt($(document.body).css('padding-right'), 10)
+        assert.strictEqual(paddingRight, 0)
+        done()
+      })
+      .bootstrapModal('show')
+  })
+
   QUnit.test('should ignore other inline styles when trying to restore body padding after closing', function (assert) {
     assert.expect(2)
     var done = assert.async()
@@ -373,5 +453,27 @@ $(function () {
         $(this).bootstrapModal('hide')
       })
       .bootstrapModal('show')
+  })
+
+  QUnit.test('should not follow link in area tag', function (assert) {
+    assert.expect(2)
+    var done = assert.async()
+
+    $('<map><area id="test" shape="default" data-toggle="modal" data-target="#modal-test" href="demo.html"/></map>')
+      .appendTo('#qunit-fixture')
+
+    $('<div id="modal-test"><div class="contents"><div id="close" data-dismiss="modal"/></div></div>')
+      .appendTo('#qunit-fixture')
+
+    $('#test')
+      .on('click.bs.modal.data-api', function (event) {
+        assert.notOk(event.isDefaultPrevented(), 'navigating to href will happen')
+
+        setTimeout(function () {
+          assert.ok(event.isDefaultPrevented(), 'model shown instead of navigating to href')
+          done()
+        }, 1)
+      })
+      .trigger('click')
   })
 })

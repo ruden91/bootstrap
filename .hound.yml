@@ -1,6 +1,7 @@
 fail_on_violations: true
 
 scss:
+<<<<<<< HEAD
   enabled: false
 
 javascript:
@@ -10,3 +11,18 @@ javascript:
 jscs:
   enabled: true
   config_file: js/.jscsrc
+=======
+  enabled: true
+  config_file: scss/.scss-lint.yml
+
+javascript:
+  enabled: false
+
+eslint:
+  enabled: true
+  config_file: js/.eslintrc.json
+  ignore_file: .houndignore
+
+ruby:
+  enabled: false
+>>>>>>> db23b1f32e277e0e39485284f4007e8c19a31cf6

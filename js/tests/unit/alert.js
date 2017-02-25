@@ -1,5 +1,5 @@
 $(function () {
-  'use strict';
+  'use strict'
 
   QUnit.module('alert plugin')
 
@@ -34,20 +34,21 @@ $(function () {
 
   QUnit.test('should fade element out on clicking .close', function (assert) {
     assert.expect(1)
-    var alertHTML = '<div class="alert alert-danger fade in">'
+    var alertHTML = '<div class="alert alert-danger fade show">'
         + '<a class="close" href="#" data-dismiss="alert">×</a>'
         + '<p><strong>Holy guacamole!</strong> Best check yo self, you\'re not looking too good.</p>'
         + '</div>'
-    var $alert = $(alertHTML).bootstrapAlert()
+
+    var $alert = $(alertHTML).bootstrapAlert().appendTo($('#qunit-fixture'))
 
     $alert.find('.close').trigger('click')
 
-    assert.strictEqual($alert.hasClass('in'), false, 'remove .in class on .close click')
+    assert.strictEqual($alert.hasClass('show'), false, 'remove .show class on .close click')
   })
 
   QUnit.test('should remove element when clicking .close', function (assert) {
     assert.expect(2)
-    var alertHTML = '<div class="alert alert-danger fade in">'
+    var alertHTML = '<div class="alert alert-danger fade show">'
         + '<a class="close" href="#" data-dismiss="alert">×</a>'
         + '<p><strong>Holy guacamole!</strong> Best check yo self, you\'re not looking too good.</p>'
         + '</div>'
